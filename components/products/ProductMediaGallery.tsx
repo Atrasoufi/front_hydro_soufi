@@ -74,25 +74,16 @@ export default function ProductMediaGallery({
   }, [media]);
 
   const [activeIndex, setActiveIndex] = useState(primaryIndex);
-
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  /*
-   * فقط وقتی محصول/primary واقعاً تغییر کرد
-   * index را sync می‌کنیم.
-   */
   useEffect(() => {
     setActiveIndex(primaryIndex);
   }, [primaryIndex]);
 
-  /*
-   * جلوگیری از scroll صفحه هنگام باز بودن Lightbox
-   */
   useEffect(() => {
     if (!lightboxOpen) return;
 
     const previousOverflow = document.body.style.overflow;
-
     document.body.style.overflow = "hidden";
 
     return () => {
@@ -100,18 +91,16 @@ export default function ProductMediaGallery({
     };
   }, [lightboxOpen]);
 
-  /*
-   * Keyboard navigation
-   */
   useEffect(() => {
-    if (!lightboxOpen || media.length <= 1) {
-      return;
-    }
+    if (!lightboxOpen) return;
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setLightboxOpen(false);
+        return;
       }
+
+      if (media.length <= 1) return;
 
       if (event.key === "ArrowLeft") {
         setActiveIndex((current) =>
@@ -194,17 +183,14 @@ export default function ProductMediaGallery({
             />
           )}
 
-          {/* Overlay */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-24 bg-gradient-to-t from-black/45 to-transparent" />
 
-          {/* Counter */}
           {media.length > 1 && (
             <div className="absolute bottom-4 right-4 z-30 rounded-full bg-black/45 px-3 py-1.5 text-[10px] font-bold text-white backdrop-blur-sm">
               {activeIndex + 1} / {media.length}
             </div>
           )}
 
-          {/* Fullscreen */}
           {activeMedia.type === "image" && (
             <button
               type="button"
@@ -215,7 +201,6 @@ export default function ProductMediaGallery({
             </button>
           )}
 
-          {/* Previous */}
           {media.length > 1 && (
             <button
               type="button"
@@ -226,7 +211,6 @@ export default function ProductMediaGallery({
             </button>
           )}
 
-          {/* Next */}
           {media.length > 1 && (
             <button
               type="button"
@@ -298,16 +282,25 @@ export default function ProductMediaGallery({
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-[#02070d]/95 p-4"
           dir="rtl"
+          onClick={() => setLightboxOpen(false)}
         >
+          {/* Close */}
           <button
             type="button"
-            onClick={() => setLightboxOpen(false)}
-            className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20"
+            onClick={(event) => {
+              event.stopPropagation();
+              setLightboxOpen(false);
+            }}
+            className="absolute right-5 top-5 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20"
           >
             <X size={21} />
           </button>
 
-          <div className="relative h-[80vh] w-full max-w-6xl">
+          {/* Image area */}
+          <div
+            className="relative h-[80vh] w-full max-w-6xl"
+            onClick={(event) => event.stopPropagation()}
+          >
             <Image
               src={activeMedia.url}
               alt={productName}
@@ -322,16 +315,22 @@ export default function ProductMediaGallery({
             <>
               <button
                 type="button"
-                onClick={previousMedia}
-                className="absolute right-5 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  previousMedia();
+                }}
+                className="absolute right-5 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
               >
                 <ChevronRight size={24} />
               </button>
 
               <button
                 type="button"
-                onClick={nextMedia}
-                className="absolute left-5 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  nextMedia();
+                }}
+                className="absolute left-5 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
               >
                 <ChevronLeft size={24} />
               </button>
