@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #071827;
+  --deep: #0b2236;
+  --gold: #ffb51b;
+  --ink: #10243a;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #f5f8fb;
+  color: var(--ink);
+  font-family: Vazirmatn, Arial, sans-serif;
+}
+a { text-decoration: none; }
+button, input, select { font: inherit; }
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-[min(1180px,calc(100%-40px))];
+  }
+  .gold-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[#ffb51b] px-5 py-3 text-sm font-extrabold text-[#101820] transition hover:-translate-y-0.5 hover:bg-[#ffc33d];
+  }
+  .dark-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-white/60 bg-[#071827]/20 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10;
+  }
+  .section-label {
+    @apply text-sm font-extrabold text-[#e39b00];
+  }
+}
+
+@media (max-width: 900px) {
+  .container-site { @apply w-[calc(100%-28px)]; }
+}

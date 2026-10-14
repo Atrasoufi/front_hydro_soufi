@@ -1,0 +1,1 @@
+import {NextResponse} from 'next/server';import {apiUrl} from '../../../../lib/api';export async function GET(){const r=await fetch(apiUrl('/services/apiservices/home/'),{next:{revalidate:600}});return new NextResponse(await r.text(),{status:r.status,headers:{'content-type':'application/json'}})}
