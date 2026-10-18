@@ -5,19 +5,17 @@ import { ChevronLeft, ChevronRight, Maximize2, Play, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type ProductImage = {
-  id?: number | string;
-  url?: string;
-  image?: string;
-  is_primary?: boolean;
+  id: number;
+  alt_text?: string;
+  url: string;
+  is_primary: boolean;
 };
 
 type ProductVideo = {
-  id?: number | string;
-  url?: string;
-  video_url?: string;
-  file?: string;
-  thumbnail?: string;
-  cover_image?: string;
+  id: number;
+  url: string;
+  source: "aparat" | "cdn" | string;
+  is_primary: boolean;
 };
 
 type MediaItem =
@@ -25,13 +23,15 @@ type MediaItem =
       type: "image";
       id: string;
       url: string;
+      alt?: string;
       isPrimary: boolean;
     }
   | {
       type: "video";
       id: string;
       url: string;
-      thumbnail?: string;
+      source: string;
+      isPrimary: boolean;
     };
 
 export default function ProductMediaGallery({
@@ -44,31 +44,31 @@ export default function ProductMediaGallery({
   productName: string;
 }) {
   const media = useMemo<MediaItem[]>(() => {
-    const imageItems: MediaItem[] = images
-      .filter((item) => item.url || item.image)
-      .map((item, index) => ({
+    const imageItems: MediaItem[] = (images ?? [])
+      .filter((item) => item?.url)
+      .map((item) => ({
         type: "image",
-        id: `image-${item.id ?? index}`,
-        url: item.url || item.image || "",
+        id: `image-${item.id}`,
+        url: item.url,
+        alt: item.alt_text || productName,
         isPrimary: item.is_primary === true,
       }));
 
-    const videoItems: MediaItem[] = videos
-      .filter((item) => item.url || item.video_url || item.file)
-      .map((item, index) => ({
+    const videoItems: MediaItem[] = (videos ?? [])
+      .filter((item) => item?.url)
+      .map((item) => ({
         type: "video",
-        id: `video-${item.id ?? index}`,
-        url: item.url || item.video_url || item.file || "",
-        thumbnail: item.thumbnail || item.cover_image,
+        id: `video-${item.id}`,
+        url: item.url,
+        source: item.source,
+        isPrimary: item.is_primary === true,
       }));
 
     return [...imageItems, ...videoItems];
-  }, [images, videos]);
+  }, [images, videos, productName]);
 
   const primaryIndex = useMemo(() => {
-    const index = media.findIndex(
-      (item) => item.type === "image" && item.isPrimary,
-    );
+    const index = media.findIndex((item) => item.isPrimary);
 
     return index >= 0 ? index : 0;
   }, [media]);
@@ -152,6 +152,31 @@ export default function ProductMediaGallery({
     );
   }
 
+  function renderVideo(video: Extract<MediaItem, { type: "video" }>) {
+    if (video.source === "aparat") {
+      return (
+        <iframe
+          src={video.url}
+          title={productName}
+          className="h-full w-full border-0"
+          allow="autoplay; fullscreen"
+          allowFullScreen
+        />
+      );
+    }
+
+    return (
+      <video
+        key={video.id}
+        src={video.url}
+        controls
+        playsInline
+        preload="metadata"
+        className="h-full w-full object-contain"
+      />
+    );
+  }
+
   return (
     <>
       <div className="space-y-3">
@@ -165,7 +190,7 @@ export default function ProductMediaGallery({
             >
               <Image
                 src={activeMedia.url}
-                alt={productName}
+                alt={activeMedia.alt || productName}
                 fill
                 priority
                 sizes="(max-width:1024px) 100vw, 50vw"
@@ -174,13 +199,7 @@ export default function ProductMediaGallery({
               />
             </button>
           ) : (
-            <video
-              key={activeMedia.id}
-              src={activeMedia.url}
-              controls
-              playsInline
-              className="h-full w-full object-contain"
-            />
+            renderVideo(activeMedia)
           )}
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-24 bg-gradient-to-t from-black/45 to-transparent" />
@@ -242,16 +261,7 @@ export default function ProductMediaGallery({
                   {item.type === "image" ? (
                     <Image
                       src={item.url}
-                      alt={`${productName} - ${index + 1}`}
-                      fill
-                      sizes="82px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  ) : item.thumbnail ? (
-                    <Image
-                      src={item.thumbnail}
-                      alt="ویدیو"
+                      alt={item.alt || `${productName} - ${index + 1}`}
                       fill
                       sizes="82px"
                       className="object-cover"
@@ -277,14 +287,13 @@ export default function ProductMediaGallery({
         )}
       </div>
 
-      {/* LIGHTBOX */}
+      {/* LIGHTBOX - ONLY IMAGES */}
       {lightboxOpen && activeMedia.type === "image" && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-[#02070d]/95 p-4"
           dir="rtl"
           onClick={() => setLightboxOpen(false)}
         >
-          {/* Close */}
           <button
             type="button"
             onClick={(event) => {
@@ -296,14 +305,13 @@ export default function ProductMediaGallery({
             <X size={21} />
           </button>
 
-          {/* Image area */}
           <div
             className="relative h-[80vh] w-full max-w-6xl"
             onClick={(event) => event.stopPropagation()}
           >
             <Image
               src={activeMedia.url}
-              alt={productName}
+              alt={activeMedia.alt || productName}
               fill
               sizes="100vw"
               className="object-contain"
