@@ -134,7 +134,7 @@ export default function ProductCatalog({
                 className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pr-11 pl-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#ffb51b] focus:bg-white focus:ring-4 focus:ring-[#ffb51b]/10"
               />
             </div>
-            <button className="gold-btn h-12 min-w-32" type="submit">
+            <button className="gold-btn h-12 w-full sm:min-w-32 sm:w-auto" type="submit">
               جستجو
               <Search size={16} />
             </button>
@@ -157,12 +157,12 @@ export default function ProductCatalog({
           </div>
 
           <div className="min-w-0">
-            <div className="mb-5 flex items-end justify-between gap-4">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <div className="text-sm font-bold text-[#e39b00]">کاتالوگ محصولات</div>
                 <h2 className="mt-1 text-2xl font-black text-[#10243a]">محصولات هیدرولیک صوفی</h2>
               </div>
-              <div className="rounded-full bg-white px-4 py-2 text-[11px] font-bold text-slate-500 shadow-sm">
+              <div className="w-fit rounded-full bg-white px-4 py-2 text-[11px] font-bold text-slate-500 shadow-sm">
                 {data.count.toLocaleString('fa-IR')} محصول
               </div>
             </div>

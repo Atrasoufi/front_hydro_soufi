@@ -34,7 +34,7 @@ export default async function ServiceDetail({
       >
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1800&q=80"
+            src="/images/hero-services.svg"
             alt=""
             fill
             priority
@@ -55,10 +55,10 @@ export default async function ServiceDetail({
             <div className="text-sm font-bold text-[#ffb51b]">
               خدمات هیدرولیک صوفی
             </div>
-            <h1 className="mt-2 text-3xl font-black leading-[1.6] md:text-4xl">
+            <h1 className="mt-2 text-2xl font-black leading-[1.65] sm:text-3xl md:text-4xl">
               {service.name}
             </h1>
-            <p className="mt-4 text-sm leading-8 text-white/65">
+            <p className="mt-4 text-[13px] leading-7 text-white/65 sm:text-sm sm:leading-8">
               {service.short_description}
             </p>
             <Link href="/#consult" className="gold-btn mt-6">

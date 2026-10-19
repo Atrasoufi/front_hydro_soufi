@@ -1,3 +1,4 @@
+import { createPageMetadata } from "../../lib/seo";
 import PageShell from '../../components/shared/PageShell';
 import Hero from '../../components/shared/Hero';
 import ProductCatalog from '../../components/products/ProductCatalog';
@@ -13,6 +14,7 @@ const fallbackCategories: ProductCategory[] = [
   { id: 6, name: 'تجهیزات صنایع ریلی' },
 ];
 
+export const metadata = createPageMetadata("/products");
 export default async function Products({
   searchParams,
 }: {
@@ -54,7 +56,7 @@ export default async function Products({
         eyebrow="کاتالوگ هیدرولیک صوفی"
         title="محصولات و تجهیزات هیدرولیک صنعتی"
         description="محصولات، تجهیزات و راهکارهای هیدرولیک را بر اساس دسته‌بندی، صنعت و نیاز پروژه پیدا کنید."
-        image="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1800&q=80"
+        image="/images/hero-products.svg"
       />
       <ProductCatalog data={productData} categories={categoryData} industries={industryData} />
     </PageShell>

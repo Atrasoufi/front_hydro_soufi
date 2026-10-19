@@ -126,7 +126,7 @@ export default function ProductMediaGallery({
     return (
       <div className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-white/5 md:h-[360px]">
         <Image
-          src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=80"
+          src="/images/industrial-machinery.svg"
           alt={productName}
           fill
           priority

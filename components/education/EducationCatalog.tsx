@@ -203,7 +203,7 @@ export default function EducationCatalog({
             </div>
 
             <button
-              className="gold-btn h-12 min-w-32"
+              className="gold-btn h-12 w-full sm:min-w-32 sm:w-auto"
               type="submit"
             >
               جستجو
@@ -245,7 +245,7 @@ export default function EducationCatalog({
           <div className="min-w-0">
 
             {/* Heading */}
-            <div className="mb-5 flex items-end justify-between gap-4">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <div className="text-sm font-bold text-[#e39b00]">
                   آموزش و دانش
@@ -256,7 +256,7 @@ export default function EducationCatalog({
                 </h2>
               </div>
 
-              <div className="rounded-full bg-white px-4 py-2 text-[11px] font-bold text-slate-500 shadow-sm">
+              <div className="w-fit rounded-full bg-white px-4 py-2 text-[11px] font-bold text-slate-500 shadow-sm">
                 {data.count.toLocaleString("fa-IR")} محتوا
               </div>
             </div>

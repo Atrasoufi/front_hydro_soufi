@@ -4,12 +4,12 @@ import { ArrowLeft, Factory, CheckCircle2 } from 'lucide-react';
 import type { Industry } from '../../lib/types';
 
 const fallbackImages = [
-  'https://images.unsplash.com/photo-1516939884455-1445c8652f83?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1541971875076-8f970d573be6?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1000&q=80',
+  '/images/industry-rail.svg',
+  '/images/industry-agriculture.svg',
+  '/images/industry-construction.svg',
+  '/images/industry-mining.svg',
+  '/images/industry-marine.svg',
+  '/images/industry-energy.svg',
 ];
 
 export default function IndustriesGrid({ data }: { data: Industry[] }) {
@@ -64,7 +64,7 @@ export default function IndustriesGrid({ data }: { data: Industry[] }) {
             </div>
           </div>
           <div className="relative h-[300px] overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-            <Image src="https://images.unsplash.com/photo-1565031491910-e57fac031c41?auto=format&fit=crop&w=1400&q=80" alt="راهکار صنعتی" fill sizes="(max-width:1024px) 100vw, 45vw" className="object-cover" unoptimized />
+            <Image src="/images/industrial-solution.svg" alt="راهکار صنعتی" fill sizes="(max-width:1024px) 100vw, 45vw" className="object-cover" unoptimized />
             <div className="absolute inset-0 bg-gradient-to-t from-[#071827]/80 to-transparent" />
           </div>
         </div>

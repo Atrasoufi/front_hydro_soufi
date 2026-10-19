@@ -37,31 +37,31 @@ export default function Hero({
       </div>
 
       {/* Content */}
-      <div className="container-site relative z-10 flex min-h-[300px] items-center py-12 md:min-h-[355px] md:py-16">
-        <div className="max-w-[570px]">
+      <div className="container-site relative z-10 flex min-h-[320px] items-center py-10 sm:min-h-[330px] sm:py-12 md:min-h-[355px] md:py-16">
+        <div className="w-full max-w-[570px]">
           {eyebrow && (
             <div className="mb-3 text-sm font-extrabold text-[#ffb51b]">
               {eyebrow}
             </div>
           )}
 
-          <h1 className="text-[34px] font-black leading-[1.45] tracking-tight md:text-[45px]">
+          <h1 className="text-[29px] font-black leading-[1.55] tracking-tight sm:text-[34px] md:text-[45px]">
             {title}
           </h1>
 
           {description && (
-            <p className="mt-3 max-w-[520px] text-[14px] leading-8 text-white/85 md:text-[16px]">
+            <p className="mt-3 max-w-[520px] text-[13px] leading-7 text-white/85 sm:text-[14px] sm:leading-8 md:text-[16px]">
               {description}
             </p>
           )}
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="#consult" className="gold-btn">
+          <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-3">
+            <Link href="#consult" className="gold-btn w-full sm:w-auto">
               مشاوره و استعلام قیمت
               <MessageCircle size={15} />
             </Link>
 
-            <Link href="/products" className="dark-btn">
+            <Link href="/products" className="dark-btn w-full sm:w-auto">
               مشاهده محصولات
               <ArrowLeft size={15} />
             </Link>

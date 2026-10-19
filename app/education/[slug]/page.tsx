@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
   BookOpen,
   CheckCircle2,
   Image as ImageIcon,
@@ -12,6 +11,7 @@ import {
 import PageShell from "../../../components/shared/PageShell";
 import Hero from "../../../components/shared/Hero";
 import { apiUrl } from "../../../lib/api";
+import { siteUrl } from "../../../lib/seo";
 
 type EducationImage = {
   id: number;
@@ -40,8 +40,7 @@ type EducationDetailData = {
   content?: string;
 };
 
-const fallbackImage =
-  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1800&q=80";
+const fallbackImage = "/images/hero-education.svg";
 
 function getVideoType(source?: string) {
   return String(source || "")
@@ -60,6 +59,8 @@ function getAparatEmbedUrl(url: string) {
   /*
    * اگر URL به شکل:
    * https://www.aparat.com/v/VIDEO_ID
+   * یا:
+   * https://www.aparat.com/video/VIDEO_ID
    * باشد، آن را به embed تبدیل می‌کنیم.
    */
   const match = url.match(/aparat\.com\/(?:v|video)\/([^/?#]+)/i);
@@ -78,7 +79,7 @@ function renderVideo(video: EducationVideo, title: string) {
     const embedUrl = getAparatEmbedUrl(video.url);
 
     return (
-      <div className="relative aspect-video overflow-hidden rounded-2xl bg-[#071827]">
+      <div className="relative aspect-video overflow-hidden rounded-xl bg-[#071827] sm:rounded-2xl">
         <iframe
           src={embedUrl}
           title={video.caption || title}
@@ -91,8 +92,9 @@ function renderVideo(video: EducationVideo, title: string) {
   }
 
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl bg-[#071827]">
+    <div className="relative aspect-video overflow-hidden rounded-xl bg-[#071827] sm:rounded-2xl">
       <video
+        key={video.id}
         src={video.url}
         controls
         playsInline
@@ -120,28 +122,27 @@ export default async function EducationDetail({
       Accept: "application/json",
     },
   });
-  console.log(response);
+
   if (!response.ok) {
     return (
       <PageShell>
-        <section className="section" dir="rtl">
+        <section className="bg-[#f7f9fc] px-4 py-10 sm:px-6 md:py-14" dir="rtl">
           <div className="container-site">
-            <div className="rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white px-5 py-14 text-center shadow-sm sm:px-8">
               <BookOpen className="mx-auto mb-4 text-slate-300" size={42} />
 
               <h1 className="text-xl font-black text-[#071827]">
                 آموزش مورد نظر پیدا نشد
               </h1>
 
-              <p className="mt-3 text-sm leading-7 text-slate-500">
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-500">
                 ممکن است این آموزش حذف شده باشد یا آدرس آن تغییر کرده باشد.
               </p>
 
               <Link
                 href="/education"
-                className="gold-btn mx-auto mt-6 inline-flex"
+                className="gold-btn mx-auto mt-7 inline-flex"
               >
-                <ArrowRight size={16} />
                 بازگشت به آموزش‌ها
               </Link>
             </div>
@@ -165,6 +166,26 @@ export default async function EducationDetail({
     images[0]?.url ||
     fallbackImage;
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: education.title,
+    description: education.excerpt || "آموزش و مقاله تخصصی هیدرولیک صنعتی.",
+    image: primaryImage.startsWith("http")
+      ? primaryImage
+      : `${siteUrl}${primaryImage}`,
+    mainEntityOfPage: `${siteUrl}/education/${education.slug || slug}`,
+    inLanguage: "fa-IR",
+    author: {
+      "@type": "Organization",
+      name: "هیدرولیک صوفی",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "هیدرولیک صوفی",
+    },
+  };
+
   return (
     <PageShell>
       {/* Hero */}
@@ -174,33 +195,27 @@ export default async function EducationDetail({
         image={primaryImage}
       />
 
-      <main className="section bg-[#f7f9fc]" dir="rtl">
+      {/* Article Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+
+      {/* Main Content */}
+      <main
+        className="bg-[#f7f9fc] px-4 py-8 sm:px-6 md:py-10 lg:py-12"
+        dir="rtl"
+      >
         <div className="container-site">
-          {/* Breadcrumb */}
-          <div className="mb-6 flex items-center gap-2 text-xs text-slate-400">
-            <Link href="/" className="transition hover:text-[#071827]">
-              خانه
-            </Link>
-
-            <ArrowRight size={13} />
-
-            <Link href="/education" className="transition hover:text-[#071827]">
-              آموزش‌ها
-            </Link>
-
-            <ArrowRight size={13} />
-
-            <span className="line-clamp-1 text-slate-500">
-              {education.title}
-            </span>
-          </div>
-
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="grid min-w-0 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-10">
             {/* Main Content */}
             <article className="min-w-0">
+              {/* Article Card */}
               <div className="overflow-hidden rounded-2xl border border-[#e2e9f0] bg-white shadow-[0_10px_35px_rgba(10,30,50,.05)]">
                 {/* Article Header */}
-                <div className="border-b border-slate-100 px-6 py-7 md:px-9 md:py-8">
+                <div className="border-b border-slate-100 px-5 py-7 sm:px-6 md:px-9 md:py-9">
                   <div className="mb-4 flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fff7df] px-3 py-1.5 text-[11px] font-bold text-[#a66b00]">
                       <BookOpen size={14} />
@@ -225,9 +240,9 @@ export default async function EducationDetail({
                   )}
                 </div>
 
-                {/* Main Content */}
+                {/* Article Content */}
                 {education.content && (
-                  <div className="px-6 py-8 md:px-9 md:py-10">
+                  <div className="px-5 py-8 sm:px-6 md:px-9 md:py-11">
                     <div
                       className="
                         education-content
@@ -319,9 +334,9 @@ export default async function EducationDetail({
 
               {/* Videos */}
               {videos.length > 0 && (
-                <section className="mt-7">
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
+                <section className="mt-10 md:mt-12">
+                  <div className="mb-5 flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
                       <PlayCircle size={19} />
                     </div>
 
@@ -357,9 +372,9 @@ export default async function EducationDetail({
 
               {/* Image Gallery */}
               {images.length > 0 && (
-                <section className="mt-7">
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
+                <section className="mt-10 md:mt-12">
+                  <div className="mb-5 flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
                       <ImageIcon size={18} />
                     </div>
 
@@ -374,7 +389,7 @@ export default async function EducationDetail({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 md:grid-cols-3">
                     {images.map((image) => (
                       <div
                         key={image.id}
@@ -387,7 +402,7 @@ export default async function EducationDetail({
                               image.alt_text || image.caption || education.title
                             }
                             fill
-                            sizes="(max-width: 768px) 50vw, 33vw"
+                            sizes="(max-width: 479px) 100vw, (max-width: 768px) 50vw, 33vw"
                             className="object-cover transition duration-500 group-hover:scale-105"
                           />
                         </div>
@@ -405,7 +420,7 @@ export default async function EducationDetail({
             </article>
 
             {/* Sidebar */}
-            <aside className="h-fit lg:sticky lg:top-24">
+            <aside className="h-fit lg:sticky lg:top-28">
               <div className="overflow-hidden rounded-2xl border border-[#dfe7ef] bg-white shadow-[0_10px_35px_rgba(10,30,50,.05)]">
                 {/* Sidebar Header */}
                 <div className="bg-[#071827] px-5 py-5 text-white">
@@ -506,9 +521,8 @@ export default async function EducationDetail({
               {/* Back */}
               <Link
                 href="/education"
-                className="mt-4 flex h-12 items-center justify-center gap-2 rounded-xl border border-[#dce5ed] bg-white text-xs font-bold text-[#071827] transition hover:border-[#ffb51b] hover:bg-[#fffaf0]"
+                className="mt-5 flex h-12 items-center justify-center gap-2 rounded-xl border border-[#dce5ed] bg-white text-xs font-bold text-[#071827] transition hover:border-[#ffb51b] hover:bg-[#fffaf0]"
               >
-                <ArrowRight size={15} />
                 بازگشت به آموزش‌ها
               </Link>
             </aside>
@@ -518,42 +532,3 @@ export default async function EducationDetail({
     </PageShell>
   );
 }
-// import PageShell from "../../../components/shared/PageShell";
-// import { apiUrl } from "../../../lib/api";
-// import Hero from "../../../components/shared/Hero";
-// export default async function EducationDetail({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) {
-//   const { slug } = await params;
-//   const r = await fetch(apiUrl(`/education/api/education/${slug}/`), {
-//     next: { revalidate: 300 },
-//   });
-//   if (!r.ok)
-//     return (
-//       <PageShell>
-//         <div className="container section">محتوا پیدا نشد.</div>
-//       </PageShell>
-//     );
-//   const d = await r.json();
-//   const e = d.results?.[0] || d;
-//   return (
-//     <PageShell>
-//       <Hero
-//         title={e.title}
-//         description={e.excerpt || ""}
-//         image={
-//           e.featured_media ||
-//           "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1800&q=80"
-//         }
-//       />
-//       <section className="section">
-//         <div className="container card" style={{ padding: 30 }}>
-//           <h2>{e.title}</h2>
-//           <p>{e.excerpt}</p>
-//         </div>
-//       </section>
-//     </PageShell>
-//   );
-// }

@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import PageShell from "../../../components/shared/PageShell";
 import ProductMediaGallery from "../../../components/products/ProductMediaGallery";
 import { apiUrl } from "../../../lib/api";
+import { siteUrl } from "../../../lib/seo";
 
 async function getProduct(slug: string) {
   const response = await fetch(apiUrl(`/products/api/products/${slug}/`), {
@@ -44,8 +45,53 @@ export default async function ProductDetail({
 
   const videos = Array.isArray(product.videos) ? product.videos : [];
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.short_description || product.full_description || "تجهیزات هیدرولیک صنعتی.",
+    image: images
+      .map((image: any) => image?.url)
+      .filter(Boolean)
+      .map((url: string) => (url.startsWith("http") ? url : `${siteUrl}${url}`)),
+    sku: product.slug,
+    brand: {
+      "@type": "Brand",
+      name: "هیدرولیک صوفی",
+    },
+    url: `${siteUrl}/products/${product.slug || slug}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "خانه", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "محصولات", item: `${siteUrl}/products` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.name,
+        item: `${siteUrl}/products/${product.slug || slug}`,
+      },
+    ],
+  };
+
   return (
     <PageShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+
       {/* PRODUCT HERO */}
       <section
         className="relative overflow-hidden bg-[#071827] py-10 text-white md:py-14"
@@ -60,18 +106,18 @@ export default async function ProductDetail({
             بازگشت به کاتالوگ
           </Link>
 
-          <div className="grid gap-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
+          <div className="grid gap-7 sm:gap-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
             {/* Product info */}
             <div>
               <div className="text-sm font-bold text-[#ffb51b]">
                 محصول هیدرولیک صوفی
               </div>
 
-              <h1 className="mt-2 text-3xl font-black leading-[1.6] md:text-4xl">
+              <h1 className="mt-2 text-2xl font-black leading-[1.65] sm:text-3xl md:text-4xl">
                 {product.name}
               </h1>
 
-              <p className="mt-4 max-w-2xl text-sm leading-8 text-white/65">
+              <p className="mt-4 max-w-2xl text-[13px] leading-7 text-white/65 sm:text-sm sm:leading-8">
                 {product.short_description}
               </p>
 
@@ -93,7 +139,7 @@ export default async function ProductDetail({
 
       {/* PRODUCT DETAILS */}
       <section className="bg-[#f6f8fa] py-10 md:py-14" dir="rtl">
-        <div className="container-site grid gap-7 lg:grid-cols-[1fr_330px]">
+        <div className="container-site grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-7">
           <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_8px_30px_rgba(10,30,50,.05)] md:p-8">
             <div className="text-sm font-black text-[#e39b00]">معرفی محصول</div>
 
@@ -320,7 +366,7 @@ export default async function ProductDetail({
 //     return (
 //       <div className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-white/5 md:h-[360px]">
 //         <Image
-//           src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=80"
+//           src="/images/industrial-machinery.svg"
 //           alt={productName}
 //           fill
 //           priority
@@ -592,18 +638,18 @@ export default async function ProductDetail({
 //             بازگشت به کاتالوگ
 //           </Link>
 
-//           <div className="grid gap-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
+//           <div className="grid gap-7 sm:gap-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
 //             {/* Product information */}
 //             <div>
 //               <div className="text-sm font-bold text-[#ffb51b]">
 //                 محصول هیدرولیک صوفی
 //               </div>
 
-//               <h1 className="mt-2 text-3xl font-black leading-[1.6] md:text-4xl">
+//               <h1 className="mt-2 text-2xl font-black leading-[1.65] sm:text-3xl md:text-4xl">
 //                 {product.name}
 //               </h1>
 
-//               <p className="mt-4 max-w-2xl text-sm leading-8 text-white/65">
+//               <p className="mt-4 max-w-2xl text-[13px] leading-7 text-white/65 sm:text-sm sm:leading-8">
 //                 {product.short_description}
 //               </p>
 
@@ -631,7 +677,7 @@ export default async function ProductDetail({
 //         className="bg-[#f6f8fa] py-10 md:py-14"
 //         dir="rtl"
 //       >
-//         <div className="container-site grid gap-7 lg:grid-cols-[1fr_330px]">
+//         <div className="container-site grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-7">
 //           <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_8px_30px_rgba(10,30,50,.05)] md:p-8">
 //             <div className="text-sm font-black text-[#e39b00]">
 //               معرفی محصول
@@ -715,18 +761,18 @@ export default async function ProductDetail({
 //   }
 
 //   const images = Array.isArray(product.images) ? product.images : [];
-//   const mainImage = images[0]?.url || product.image || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=80';
+//   const mainImage = images[0]?.url || product.image || '/images/industrial-machinery.svg';
 
 //   return (
 //     <PageShell>
 //       <section className="relative overflow-hidden bg-[#071827] py-10 text-white md:py-14" dir="rtl">
 //         <div className="container-site relative z-10">
 //           <Link href="/products" className="mb-5 inline-flex items-center gap-2 text-xs text-white/60 hover:text-white"><ArrowRight size={14} /> بازگشت به کاتالوگ</Link>
-//           <div className="grid gap-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
+//           <div className="grid gap-7 sm:gap-8 lg:grid-cols-[.95fr_1.05fr] lg:items-center">
 //             <div>
 //               <div className="text-sm font-bold text-[#ffb51b]">محصول هیدرولیک صوفی</div>
-//               <h1 className="mt-2 text-3xl font-black leading-[1.6] md:text-4xl">{product.name}</h1>
-//               <p className="mt-4 max-w-2xl text-sm leading-8 text-white/65">{product.short_description}</p>
+//               <h1 className="mt-2 text-2xl font-black leading-[1.65] sm:text-3xl md:text-4xl">{product.name}</h1>
+//               <p className="mt-4 max-w-2xl text-[13px] leading-7 text-white/65 sm:text-sm sm:leading-8">{product.short_description}</p>
 //               <Link href="/#consult" className="gold-btn mt-6">درخواست مشاوره <MessageCircle size={15} /></Link>
 //             </div>
 //             <div className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 shadow-2xl md:h-[360px]">
@@ -738,7 +784,7 @@ export default async function ProductDetail({
 //       </section>
 
 //       <section className="bg-[#f6f8fa] py-10 md:py-14" dir="rtl">
-//         <div className="container-site grid gap-7 lg:grid-cols-[1fr_330px]">
+//         <div className="container-site grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-7">
 //           <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_8px_30px_rgba(10,30,50,.05)] md:p-8">
 //             <div className="text-sm font-black text-[#e39b00]">معرفی محصول</div>
 //             <h2 className="mt-2 text-2xl font-black text-[#10243a]">توضیحات فنی</h2>

@@ -4,12 +4,12 @@ import { ArrowLeft, CheckCircle2, Cog, Settings2, Wrench, Headphones, PenTool, G
 import type { Service } from '../../lib/types';
 
 const images = [
-  'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1565610222536-ef125c59da2e?auto=format&fit=crop&w=1000&q=80',
-  'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
+  '/images/hero-products.svg',
+  '/images/industrial-machinery.svg',
+  '/images/service-engineering.svg',
+  '/images/consultation-background.svg',
+  '/images/hero-home.svg',
+  '/images/service-electronics.svg',
 ];
 
 const icons = [Cog, Settings2, Wrench, Gauge, PenTool, Headphones];
@@ -60,7 +60,7 @@ export default function ServicesGrid({ data }: { data: Service[] }) {
       <section className="bg-white py-12 md:py-16">
         <div className="container-site grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
           <div className="relative min-h-[320px] overflow-hidden rounded-3xl bg-[#071827] shadow-[0_18px_50px_rgba(3,15,27,.18)]">
-            <Image src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=80" alt="مشاوره و خدمات هیدرولیک" fill sizes="(max-width:1024px) 100vw, 40vw" className="object-cover opacity-75" unoptimized />
+            <Image src="/images/hero-services.svg" alt="مشاوره و خدمات هیدرولیک" fill sizes="(max-width:1024px) 100vw, 40vw" className="object-cover opacity-75" unoptimized />
             <div className="absolute inset-0 bg-gradient-to-t from-[#071827] via-[#071827]/40 to-transparent" />
             <div className="absolute bottom-7 right-7 left-7 text-white">
               <div className="text-xs font-bold text-[#ffb51b]">پشتیبانی فنی</div>

@@ -9,7 +9,7 @@ export default function Home() {
         title="تجهیزات و سیستم‌های هیدرولیک صنعتی"
         eyebrow="هیدرولیک صوفی"
         description="طراحی، ساخت و تأمین تجهیزات هیدرولیک برای صنایع مختلف با تمرکز بر کیفیت، عملکرد و راهکار مهندسی."
-        image="https://images.unsplash.com/photo-1565610222536-ef125c59da2e?auto=format&fit=crop&w=1800&q=80"
+        image="/images/hero-home.svg"
       />
       <HomeLazy />
     </PageShell>

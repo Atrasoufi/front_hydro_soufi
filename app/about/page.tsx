@@ -1,3 +1,4 @@
+import { createPageMetadata } from "../../lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,9 +10,11 @@ import {
   Linkedin,
   MessageCircle,
   Phone,
+  Mail,
+  MapPin,
   ShieldCheck,
   Users,
-  Youtube,
+  CirclePlay,
 } from "lucide-react";
 
 import PageShell from "../../components/shared/PageShell";
@@ -55,17 +58,17 @@ const socialLinks = [
   {
     title: "اینستاگرام",
     icon: Instagram,
-    href: "#",
+    href: "https://www.instagram.com/soufi_hydrulic?psln=MXB0d2phcHpjMWNrMA==",
   },
   {
     title: "لینکدین",
     icon: Linkedin,
-    href: "#",
+    href: "https://www.linkedin.com/in/ebrahim-soofi-netestani-54b429438/",
   },
   {
-    title: "یوتیوب",
-    icon: Youtube,
-    href: "#",
+    title: "آپارات",
+    icon: CirclePlay,
+    href: "https://www.aparat.com/Hydraulicsoufi",
   },
 ];
 
@@ -74,11 +77,12 @@ const socialLinks = [
 ========================================================= */
 
 const heroImage =
-  "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=85";
+  "/images/industrial-machinery.svg";
 
 const companyImage =
-  "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=1400&q=85";
+  "/images/company-facility.svg";
 
+export const metadata = createPageMetadata("/about");
 export default function AboutPage() {
   return (
     <PageShell>
@@ -244,32 +248,78 @@ export default function AboutPage() {
 
                 {/* Contact + Social */}
                 <div className="mt-7 border-t border-slate-100 pt-6">
-                  <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="grid gap-3 sm:grid-cols-2">
                     {/* Phone */}
                     <a
-                      href="tel:+982188888888"
-                      className="flex items-center gap-3"
+                      href="tel:+989120481748"
+                      className="flex min-w-0 items-center gap-3 rounded-xl border border-slate-100 bg-[#f8fafc] p-3 transition hover:border-[#ffb51b]/40 hover:bg-[#fffaf0]"
                       dir="rtl"
                     >
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
-                        <Phone size={18} />
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
+                        <Phone size={17} />
                       </div>
 
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-[10px] text-slate-400">
-                          تماس با ما
+                          شماره تماس
                         </div>
 
                         <div
                           dir="ltr"
                           className="mt-1 text-sm font-black text-[#071827]"
                         >
-                          ۰۲۱-۸۸۸۸۸۸۸۸
+                          ۰۹۱۲-۰۴۸-۱۷۴۸
                         </div>
                       </div>
                     </a>
 
-                    {/* Social */}
+                    {/* Email */}
+                    <a
+                      href="mailto:z.soofi.n@gmail.com"
+                      className="flex min-w-0 items-center gap-3 rounded-xl border border-slate-100 bg-[#f8fafc] p-3 transition hover:border-[#ffb51b]/40 hover:bg-[#fffaf0]"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
+                        <Mail size={17} />
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="text-[10px] text-slate-400">
+                          ایمیل
+                        </div>
+
+                        <div
+                          dir="ltr"
+                          className="mt-1 truncate text-xs font-bold text-[#071827]"
+                        >
+                          z.soofi.n@gmail.com
+                        </div>
+                      </div>
+                    </a>
+
+                    {/* Address */}
+                    <div className="flex min-w-0 items-center gap-3 rounded-xl border border-slate-100 bg-[#f8fafc] p-3 sm:col-span-2">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#071827] text-[#ffb51b]">
+                        <MapPin size={17} />
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="text-[10px] text-slate-400">
+                          آدرس
+                        </div>
+
+                        <div className="mt-1 text-xs font-bold leading-6 text-[#071827]">
+                          اراک، جاده احمدآباد، سه راهی خمین، 3RQ6+GFG
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Social */}
+                  <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <span className="text-[11px] font-bold text-slate-400">
+                      شبکه‌های اجتماعی
+                    </span>
+
                     <div className="flex items-center gap-2">
                       {socialLinks.map((social) => {
                         const Icon = social.icon;
