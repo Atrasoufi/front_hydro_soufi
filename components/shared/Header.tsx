@@ -7,6 +7,7 @@ const nav = [
   ["خدمات", "/services"],
   ["صنایع", "/industries"],
   ["آموزش", "/education"],
+  ["درباره ما", "/about"],
 ];
 
 export default function Header() {
@@ -36,7 +37,6 @@ export default function Header() {
               {label}
             </Link>
           ))}
-          <span className="cursor-default text-white/80">درباره ما</span>
         </nav>
 
         <div className="mr-auto flex items-center gap-4">
